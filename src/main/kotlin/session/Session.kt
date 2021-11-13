@@ -1,5 +1,7 @@
 package com.github.asforest.mshell.session
 
+import com.pty4j.PtyProcess
+import com.pty4j.PtyProcessBuilder
 import kotlinx.coroutines.*
 import java.io.File
 import java.io.PrintWriter

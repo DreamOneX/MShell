@@ -11,6 +11,7 @@ import com.github.asforest.mshell.permission.MShellPermissions
 import com.github.asforest.mshell.session.SessionManager
 import com.github.asforest.mshell.session.SessionUser
 import com.github.asforest.mshell.util.MiraiUtil
+import com.pty4j.PtyProcessBuilder
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandSender.Companion.toCommandSender
 import net.mamoe.mirai.console.permission.PermissionService.Companion.hasPermission
@@ -22,7 +23,7 @@ import net.mamoe.mirai.message.data.PokeMessage
 import net.mamoe.mirai.message.data.content
 
 
-object MShell : KotlinPlugin(MiraiUtil.pluginDescription)
+object MShellPlugin : KotlinPlugin(MiraiUtil.pluginDescription)
 {
     val ep = ConfigProxy(EnvironmentPresets::class.java, "presets.yml")
 
