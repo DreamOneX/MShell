@@ -15,17 +15,24 @@ plugins {
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
 
-    id("net.mamoe.mirai-console") version "2.7.0"
+    id("net.mamoe.mirai-console") version "2.8.0"
 }
 
 repositories {
-    if(System.getenv()["PluginDebugDir"] != null)
-        maven("https://maven.aliyun.com/repository/public")
+//    if(System.getenv()["PluginDebugDir"] != null)
+//        maven("https://maven.aliyun.com/repository/public")
+//    maven("https://jetbrains.bintray.com/pty4j")
     mavenCentral()
 }
 
 dependencies {
     implementation("com.esotericsoftware.yamlbeans:yamlbeans:1.15")
+    implementation("org.jetbrains.pty4j:pty4j:0.12.5")
+}
+
+tasks.withType<JavaCompile> {
+    sourceCompatibility = "11"
+    targetCompatibility = "11"
 }
 
 tasks.register("buildWithManifest") {
