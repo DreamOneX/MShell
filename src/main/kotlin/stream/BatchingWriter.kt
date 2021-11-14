@@ -2,13 +2,19 @@ package com.github.asforest.mshell.stream
 
 import com.github.asforest.mshell.configuration.MainConfig
 import com.github.asforest.mshell.event.Event
+import com.github.asforest.mshell.util.AnsiEscapeUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.internal.toHexString
+import okio.ByteString.Companion.encode
 import java.io.Writer
 import java.lang.Exception
+import java.nio.charset.Charset
+import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
+import java.util.regex.Pattern
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -49,7 +55,15 @@ class BatchingWriter(
                 }
 
                 // 发送合批后的消息
-                val str = buffered.toString().trim()
+                var str = buffered.toString().trim()//.replace("\\", "*")
+
+//                println(AnsiEscapeUtil.toHumanReadableText(str))
+//                println("--------------------")
+
+                str = str.replace(AnsiEscapeUtil.pattern, "")
+
+//                println(AnsiEscapeUtil.toHumanReadableText(str))
+
                 if(str.isNotEmpty())
                     onBatchedOutput(str)
             }

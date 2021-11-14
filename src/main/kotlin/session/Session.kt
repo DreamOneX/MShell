@@ -17,7 +17,7 @@ class Session(
     env: Map<String, String>,
     charset: Charset
 ) {
-    val process: Process
+    val process: PtyProcess
     val stdin: PrintWriter
     val pid: Long get() = process.pid()
     val isAlive: Boolean get() = stdoutOpeningFlag && process.isAlive
@@ -26,14 +26,19 @@ class Session(
     private var stdoutOpeningFlag = true
 
     init {
+        // 合并环境变量
+        val _map = System.getenv().toMutableMap()
+        env.forEach { _map[it.key] = it.value }
+
         // 启动子进程
-        process = ProcessBuilder()
-            .command(command)
-            .directory(workdir)
-            .also { it.environment().putAll(env) }
-            .redirectErrorStream(true)
-            .redirectInput(ProcessBuilder.Redirect.PIPE)
-            .redirectOutput(ProcessBuilder.Redirect.PIPE)
+        process = PtyProcessBuilder()
+            .setCommand(listOf(command).toTypedArray())
+            .setDirectory(workdir.absolutePath)
+            .setEnvironment(_map)
+            .setRedirectErrorStream(true)
+            .setWindowsAnsiColorEnabled(false)
+            .setInitialColumns(80)
+            .setInitialRows(20)
             .start()
         stdin = PrintWriter(process.outputStream, true, charset)
 

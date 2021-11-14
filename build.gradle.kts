@@ -19,15 +19,22 @@ plugins {
 }
 
 repositories {
-//    if(System.getenv()["PluginDebugDir"] != null)
-//        maven("https://maven.aliyun.com/repository/public")
-//    maven("https://jetbrains.bintray.com/pty4j")
+//    maven("https://maven.aliyun.com/repository/public")
     mavenCentral()
 }
 
 dependencies {
+    // 加载本地依赖
+    implementation(fileTree("libs").include("*.jar").exclude("*sources.jar"))
     implementation("com.esotericsoftware.yamlbeans:yamlbeans:1.15")
-    implementation("org.jetbrains.pty4j:pty4j:0.12.5")
+//    implementation("org.jetbrains.pty4j:pty4j:0.12.5")
+
+    // dependcies from org.jetbrains.pty4j:pty4j:0.12.5
+    implementation("org.jetbrains:annotations:20.1.0")
+    implementation("com.google.guava:guava:30.1.1-jre")
+    implementation("log4j:log4j:1.2.17")
+    implementation("net.java.dev.jna:jna:5.9.0")
+    implementation("net.java.dev.jna:jna-platform:5.9.0")
 }
 
 tasks.withType<JavaCompile> {
@@ -48,6 +55,10 @@ tasks.register("buildWithManifest") {
             attributes("Compile-Time" to timestamp)
             attributes("Compile-Time-Ms" to System.currentTimeMillis())
         }
+
+        dependencies {
+            include(dependency(fileTree("libs").include("*.jar").exclude("*sources.jar")))
+        }
     }
 }
 
@@ -62,5 +73,9 @@ tasks.register("developing", Copy::class) {
     if(!File(env).run { !exists() || isDirectory })
         throw RuntimeException("The 'PluginDebugDir' $env does not exist or is a file")
 
-    from(archive).into(env)
+    from(archive).into(env).doLast {
+        Runtime.getRuntime().exec(env+File.separator+"cp.bat")
+    }
+
+
 }
