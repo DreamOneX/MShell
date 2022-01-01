@@ -43,6 +43,7 @@ object MShellPlugin : KotlinPlugin(MiraiUtil.pluginDescription)
         PresetCommand.register()
         AuthCommand.register()
         GroupCommand.register()
+        UserCommand.register()
 
         val botEvents = GlobalEventChannel.filter { it is BotEvent }
 
