@@ -40,5 +40,5 @@ jobs:
     - uses: actions/upload-artifact@v3
       name: Upload Artifact
       with:
-        name: MShell
+        name: MShell.zip
         path: build/mirai/*
