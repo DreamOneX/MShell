@@ -15,9 +15,6 @@ import com.github.asforest.mshell.util.MShellUtils.buildUsage
 
 object MainCommand : TreeCommand()
 {
-    @Tree(name = "auth", aliases = ["a"])
-    val authCommand = AuthCommand
-
     @Tree(name = "preset", aliases = ["p"])
     val presetCommand = PresetCommand
 
