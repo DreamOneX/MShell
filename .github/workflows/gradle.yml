@@ -28,10 +28,17 @@ jobs:
     - name: Build with Gradle
       uses: gradle/gradle-build-action@937999e9cc2425eddc7fd62d1053baf041147db7
       with:
-        arguments: build
+        arguments: buildPlugin
+        distributions-cache-enabled: true
+        wrapper-cache-enabled: true
+        dependencies-cache-enabled: false
+        dependencies-cache-exact: false
+        configuration-cache-enabled: false
+        configuration-cache-exact: false
+        cache-read-only: false
         
-      steps:
-      - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v3
+      name: Upload Artifact
       with:
         name: MShell
         path: build/mirai/*
